@@ -20,5 +20,17 @@ defmodule Exgit.ClientTest do
 
       assert ExGit.Client.get_repos_by_username(username) == expected_response
     end
+
+    test "when the user was not found return am error" do
+      username = "bernacle"
+
+      expected_response = {:error, "User not found"}
+
+      mock(fn %{method: :get, url: "https://api.github.com/users/bernacle/repos"} ->
+        %Tesla.Env{status: 404}
+      end)
+
+      assert ExGit.Client.get_repos_by_username(username) == expected_response
+    end
   end
 end

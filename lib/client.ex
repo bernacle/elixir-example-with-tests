@@ -15,6 +15,10 @@ defmodule ExGit.Client do
     {:ok, body}
   end
 
+  defp handle_get({:ok, %Tesla.Env{status: 404}}) do
+    {:error, "User not found"}
+  end
+
   defp handle_get({:error, _reason}) do
     {:error, "Internal Server Error"}
   end
